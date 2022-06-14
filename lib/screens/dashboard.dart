@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 // import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
 import '../models/gitwidgetmodel.dart';
 import '../models/totalamount.dart';
-
+import '../models/totallent.dart';
 // import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class dashboard extends StatefulWidget {
@@ -25,6 +26,7 @@ class _dashboardState extends State<dashboard> {
   int ttotal = 0;
   List wcontribution = [];
   double totalamountspent = 0.0;
+  int totallapslent = -1;
 
   AppBar appBar = AppBar(
     title: Text("Dashboard"),
@@ -45,8 +47,8 @@ class _dashboardState extends State<dashboard> {
         wcontribution = data2.weeklyContributions as List;
       });
 
-      print(data2.weeklyContributions);
-      print(response.body);
+      // print(data2.weeklyContributions);
+      // print(response.body);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -68,7 +70,7 @@ class _dashboardState extends State<dashboard> {
       });
 
       // print(data2.weeklyContributions);
-      print(response.body);
+      // print(response.body);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -83,14 +85,16 @@ class _dashboardState extends State<dashboard> {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      // var data = jsonDecode(response.body);
-      // final totalamt = totalamount.fromJson(data);
-      // setState(() {
-      //   totalamountspent = totalamt.data!.attributes?.totalAmount as double;
-      // });
+      var data = jsonDecode(response.body);
+      final totalamt = totallent.fromJson(data);
+      setState(() {
+        totallapslent = totalamt.meta!.pagination!.total as int;
+      });
+
+      print(totalamt.meta!.pagination!.total);
 
       // print(data2.weeklyContributions);
-      print(response.body);
+      // print(response.body);
     } else {
       throw Exception('Failed to load album');
     }
@@ -114,7 +118,7 @@ class _dashboardState extends State<dashboard> {
         MediaQuery.of(context).padding.top -
         appBar.preferredSize.height;
 
-    return ttotal > 0
+    return ttotal > 0 && totallapslent > -1
         ? Scaffold(
             appBar: appBar,
             drawer: Customdrawer(),
@@ -148,7 +152,7 @@ class _dashboardState extends State<dashboard> {
                               child: FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: Text(
-                                  "10",
+                                  totallapslent.toString(),
                                   style: GoogleFonts.rubik(
                                       fontWeight: FontWeight.w100,
                                       fontSize: 60,
