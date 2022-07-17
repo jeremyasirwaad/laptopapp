@@ -1,131 +1,26 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../CusDrawer.dart';
 import '../models/receiveddata.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
-import '../models/totalamount.dart';
-import './Approvedrequestes.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
-class studentdata extends StatefulWidget {
+class studentdata2 extends StatelessWidget {
   final Datar data;
-  studentdata(this.data);
 
-  @override
-  State<studentdata> createState() => _studentdataState();
-}
+  studentdata2(this.data);
 
-class _studentdataState extends State<studentdata> {
-  int totalamountspent = 0;
-  Future<dynamic> fetchtamount() async {
-    final response =
-        await http.get(Uri.parse('http://54.160.132.147/api/total-amount'));
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      var data = jsonDecode(response.body);
-      final totalamt = totalamount.fromJson(data);
-      setState(() {
-        totalamountspent = totalamt.data!.attributes?.totalAmount as int;
-        // amountspents = false;
-      });
-
-      // print(data2.weeklyContributions);
-      print(response.body);
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
+  Future<void> _launchUrl(String url) async {
+    Uri data = Uri.parse(url);
+    if (!await launchUrl(data)) {
+      throw 'Could not launch $data';
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    fetchtamount();
   }
 
   @override
   Widget build(BuildContext context) {
-    void approvereq(userid) async {
-      final response = await http.put(
-          Uri.parse('http://54.160.132.147/api/users/' + userid),
-          body: {"laptopStatus": "2"});
-
-      if (response.statusCode == 200) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => approvedrequest()),
-        );
-      } else {
-        throw Exception('Failed to load album');
-      }
-
-      // print(userid);
-    }
-
-    void updatetotalamount(newamount) async {
-      Map datafiles = {
-        'data': {'totalAmount': totalamountspent + newamount}
-      };
-
-      var dedata = jsonEncode(datafiles);
-
-      final response = await http.put(
-          Uri.parse('http://54.160.132.147/api/total-amount/'),
-          headers: {"Content-Type": "application/json"},
-          body: dedata);
-
-      if (response.statusCode == 200) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => approvedrequest()),
-        );
-      } else {
-        throw Exception('Failed to load album');
-      }
-
-      // print(userid);
-    }
-
-    TextEditingController amountcontroller = new TextEditingController();
-    Future opendialogue(userid) => showDialog(
-        context: context,
-        builder: (Context) => AlertDialog(
-              title: Text("Cost of the Laptop"),
-              content: TextField(
-                controller: amountcontroller,
-                // onChanged: (value) => {print(value)},
-                autofocus: true,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                decoration: InputDecoration(hintText: "Enter Laptop Cost"),
-              ),
-              actions: [
-                FlatButton(
-                    color: Colors.indigo,
-                    textColor: Colors.white,
-                    onPressed: () {
-                      print(amountcontroller.text);
-                      approvereq(userid);
-                      updatetotalamount(int.parse(amountcontroller.text));
-                      // print(userid);
-                      // Navigator.of(context).pop();
-                    },
-                    child: Text("Submit"))
-              ],
-            ));
-
     return Scaffold(
       bottomNavigationBar: Container(
         height: 60,
@@ -146,20 +41,11 @@ class _studentdataState extends State<studentdata> {
                   FontAwesomeIcons.xmark,
                   color: Colors.white,
                 )),
-            IconButton(
-                enableFeedback: false,
-                onPressed: () {
-                  opendialogue(widget.data.id.toString());
-                },
-                icon: FaIcon(
-                  FontAwesomeIcons.check,
-                  color: Colors.white,
-                )),
           ],
         ),
       ),
       appBar: AppBar(
-        title: Text(widget.data.displayName as String),
+        title: Text(data.displayName as String),
       ),
       drawer: Customdrawer(),
       body: SingleChildScrollView(
@@ -190,7 +76,7 @@ class _studentdataState extends State<studentdata> {
                       width: 150,
                       child: CircleAvatar(
                         backgroundImage:
-                            NetworkImage(widget.data.profilePicture as String),
+                            NetworkImage(data.profilePicture as String),
                       ),
                     ),
                     Container(
@@ -210,8 +96,7 @@ class _studentdataState extends State<studentdata> {
                                 ),
                                 Text(
                                   "Batch : " +
-                                      widget.data.academicDetail!.batch
-                                          .toString(),
+                                      data.academicDetail!.batch.toString(),
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -228,8 +113,7 @@ class _studentdataState extends State<studentdata> {
 
                                 Text(
                                   "Native : " +
-                                      widget.data.academicDetail!.native
-                                          .toString(),
+                                      data.academicDetail!.native.toString(),
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -268,8 +152,7 @@ class _studentdataState extends State<studentdata> {
                     ),
                     Container(
                       padding: EdgeInsets.all(15),
-                      child: Text(
-                          widget.data.academicDetail!.collegeEssay as String),
+                      child: Text(data.academicDetail!.collegeEssay as String),
                     )
                   ]),
                 ),
@@ -307,8 +190,7 @@ class _studentdataState extends State<studentdata> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "PhoneNo : " +
-                                    widget.data.phoneNumber.toString(),
+                                "PhoneNo : " + data.phoneNumber.toString(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -317,7 +199,7 @@ class _studentdataState extends State<studentdata> {
                                 height: 10,
                               ),
                               Text(
-                                "Email : " + widget.data.email.toString(),
+                                "Email : " + data.email.toString(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -367,15 +249,14 @@ class _studentdataState extends State<studentdata> {
                                 children: [
                                   Text(
                                     "CGPA : " +
-                                        widget.data.academicDetail!.cgpa
-                                            .toString(),
+                                        data.academicDetail!.cgpa.toString(),
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
                                   ),
                                   Text(
                                     "10th-Score : " +
-                                        widget.data.academicDetail!.marks10th
+                                        data.academicDetail!.marks10th
                                             .toString() +
                                         "%",
                                     style: GoogleFonts.roboto(
@@ -384,7 +265,7 @@ class _studentdataState extends State<studentdata> {
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      final url = widget.data.academicDetail!
+                                      final url = data.academicDetail!
                                           .marksheet10th as String;
                                       if (await canLaunch(url)) {
                                         await launch(url, forceSafariVC: false);
@@ -420,7 +301,7 @@ class _studentdataState extends State<studentdata> {
                                   // Text("CGPA : 9.0"),
                                   Text(
                                     "12th-Score : " +
-                                        widget.data.academicDetail!.marks12th
+                                        data.academicDetail!.marks12th
                                             .toString() +
                                         "%",
                                     style: GoogleFonts.roboto(
@@ -429,15 +310,14 @@ class _studentdataState extends State<studentdata> {
                                   ),
                                   Text(
                                     "DOB : " +
-                                        widget.data.academicDetail!.dob
-                                            .toString(),
+                                        data.academicDetail!.dob.toString(),
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      final url = widget.data.academicDetail!
+                                      final url = data.academicDetail!
                                           .marksheet12th as String;
                                       if (await canLaunch(url)) {
                                         await launch(url, forceSafariVC: false);

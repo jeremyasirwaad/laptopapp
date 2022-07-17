@@ -27,7 +27,7 @@ class _dashboardState extends State<dashboard> {
   int wsum = 0;
   int ttotal = 0;
   List wcontribution = [];
-  double totalamountspent = 0.0;
+  int totalamountspent = 0;
   int totallapslent = -1;
   int totalpendinglaps = -1;
   bool gits = true;
@@ -74,12 +74,12 @@ class _dashboardState extends State<dashboard> {
       var data = jsonDecode(response.body);
       final totalamt = totalamount.fromJson(data);
       setState(() {
-        totalamountspent = totalamt.data!.attributes?.totalAmount as double;
+        totalamountspent = totalamt.data!.attributes?.totalAmount as int;
         amountspents = false;
       });
 
       // print(data2.weeklyContributions);
-      // print(response.body);
+      print(response.body);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -357,12 +357,17 @@ class _dashboardState extends State<dashboard> {
                                               size: 25,
                                               color: Colors.white,
                                             )
-                                          : Text(
-                                              totalamountspent.toString() + "L",
-                                              style: GoogleFonts.rubik(
-                                                  fontWeight: FontWeight.w100,
-                                                  fontSize: 60,
-                                                  color: Colors.white),
+                                          : Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              child: Text(
+                                                totalamountspent.toString() +
+                                                    "rs",
+                                                style: GoogleFonts.rubik(
+                                                    fontWeight: FontWeight.w100,
+                                                    fontSize: 60,
+                                                    color: Colors.white),
+                                              ),
                                             ),
                                     ),
                                   ),

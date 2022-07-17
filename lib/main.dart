@@ -3,9 +3,18 @@ import './screens/dashboard.dart';
 import './screens/Laptoprequest.dart';
 import './screens/trackprogress.dart';
 import './screens/Approvedrequestes.dart';
+// import 'package:flutter_downloader/flutter_downloader.dart';
 
+Future<void> main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  // Plugin must be initialized before using
+  // await FlutterDownloader.initialize(
+  //     debug:
+  //         true, // optional: set to false to disable printing logs to console (default: true)
+  //     ignoreSsl:
+  //         true // option: set to false to disable working with http links (default: false)
+  //     );
   runApp(myapp());
 }
 
