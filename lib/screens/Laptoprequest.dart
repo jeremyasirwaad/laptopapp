@@ -83,6 +83,23 @@ class _laptoprequestState extends State<laptoprequest> {
 
   @override
   Widget build(BuildContext context) {
+    void rejectreq(id) async {
+      final response = await http.put(
+          Uri.parse('http://54.160.132.147/api/users/' + id.toString()),
+          body: {"laptopStatus": "1"});
+
+      if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => laptoprequest()),
+        );
+      } else {
+        throw Exception('Failed to load album');
+      }
+
+      // print(userid);
+    }
+
     void approvereq(userid) async {
       final response = await http.put(
           Uri.parse('http://54.160.132.147/api/users/' + userid),
@@ -141,9 +158,9 @@ class _laptoprequestState extends State<laptoprequest> {
                 decoration: InputDecoration(hintText: "Enter Laptop Cost"),
               ),
               actions: [
-                FlatButton(
-                    color: Colors.indigo,
-                    textColor: Colors.white,
+                ElevatedButton(
+                    // color: Colors.indigo,
+                    // textColor: Colors.white,
                     onPressed: () {
                       print(amountcontroller.text);
                       approvereq(userid);
@@ -152,6 +169,39 @@ class _laptoprequestState extends State<laptoprequest> {
                       // Navigator.of(context).pop();
                     },
                     child: Text("Submit"))
+              ],
+            ));
+
+    Future rejopendialogue(userid) => showDialog(
+        context: context,
+        builder: (Context) => AlertDialog(
+              title: Text("Confirm !"),
+              content:
+                  Text("Are you sure that you want to decline this request"),
+              actions: [
+                TextButton(
+                    // color: Colors.indigo,
+                    // textColor: Colors.white,
+                    onPressed: () {
+                      // print(amountcontroller.text);
+                      // approvereq(userid);
+                      // updatetotalamount(int.parse(amountcontroller.text));
+                      // print(userid);
+
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("No")),
+                ElevatedButton(
+                    // color: Colors.indigo,
+                    // textColor: Colors.white,
+                    onPressed: () {
+                      // print(amountcontroller.text);
+                      // approvereq(userid);
+                      // updatetotalamount(int.parse(amountcontroller.text));
+                      rejectreq(userid);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Yes"))
               ],
             ));
 
@@ -204,7 +254,8 @@ class _laptoprequestState extends State<laptoprequest> {
                     rdata[index].academicDetail?.department as String,
                     rdata[index].academicDetail?.collegeEssay as String,
                     rdata[index],
-                    opendialogue),
+                    opendialogue,
+                    rejopendialogue),
               ),
 
               // Requestscards(),
@@ -224,9 +275,10 @@ class Requestscards extends StatelessWidget {
   final String shortstory;
   final Datar data;
   final Function opendialogue;
+  final Function rejopendialogue;
 
   Requestscards(this.fname, this.batch, this.Dept, this.shortstory, this.data,
-      this.opendialogue);
+      this.opendialogue, this.rejopendialogue);
 
   Widget build(BuildContext context) {
     return Container(
@@ -277,7 +329,7 @@ class Requestscards extends StatelessWidget {
                 right: 20,
                 child: GestureDetector(
                   onTap: () {
-                    this.opendialogue(data.id.toString());
+                    opendialogue(data.id.toString());
                   },
                   child: Container(
                     child: Center(child: Text("Accept")),
@@ -293,14 +345,19 @@ class Requestscards extends StatelessWidget {
               Positioned(
                 bottom: 20,
                 right: 110,
-                child: Container(
-                  child: Center(child: Text("Decline")),
-                  height: 30,
-                  width: 80,
-                  // color: Colors.red.shade300,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.red.shade300),
+                child: GestureDetector(
+                  onTap: () {
+                    rejopendialogue(data.id.toString());
+                  },
+                  child: Container(
+                    child: Center(child: Text("Decline")),
+                    height: 30,
+                    width: 80,
+                    // color: Colors.red.shade300,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.red.shade300),
+                  ),
                 ),
               )
             ]),

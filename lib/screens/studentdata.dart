@@ -11,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import '../models/totalamount.dart';
 import './Approvedrequestes.dart';
+import '../screens/Laptoprequest.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
 class studentdata extends StatefulWidget {
@@ -72,6 +73,24 @@ class _studentdataState extends State<studentdata> {
       // print(userid);
     }
 
+    void rejectreq() async {
+      final response = await http.put(
+          Uri.parse(
+              'http://54.160.132.147/api/users/' + widget.data.id.toString()),
+          body: {"laptopStatus": "1"});
+
+      if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => laptoprequest()),
+        );
+      } else {
+        throw Exception('Failed to load album');
+      }
+
+      // print(userid);
+    }
+
     void updatetotalamount(newamount) async {
       Map datafiles = {
         'data': {'totalAmount': totalamountspent + newamount}
@@ -97,6 +116,7 @@ class _studentdataState extends State<studentdata> {
     }
 
     TextEditingController amountcontroller = new TextEditingController();
+
     Future opendialogue(userid) => showDialog(
         context: context,
         builder: (Context) => AlertDialog(
@@ -126,6 +146,39 @@ class _studentdataState extends State<studentdata> {
               ],
             ));
 
+    Future rejopendialogue() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Confirm !"),
+              content:
+                  Text("Are you sure that you want to decline this request"),
+              actions: [
+                TextButton(
+                    // color: Colors.indigo,
+                    // textColor: Colors.white,
+                    onPressed: () {
+                      // print(amountcontroller.text);
+                      // approvereq(userid);
+                      // updatetotalamount(int.parse(amountcontroller.text));
+                      // print(userid);
+
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("No")),
+                ElevatedButton(
+                    // color: Colors.indigo,
+                    // textColor: Colors.white,
+                    onPressed: () {
+                      // print(amountcontroller.text);
+                      // approvereq(userid);
+                      // updatetotalamount(int.parse(amountcontroller.text));
+                      rejectreq();
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Yes"))
+              ],
+            ));
+
     return Scaffold(
       bottomNavigationBar: Container(
         height: 60,
@@ -141,7 +194,9 @@ class _studentdataState extends State<studentdata> {
           children: [
             IconButton(
                 enableFeedback: false,
-                onPressed: () {},
+                onPressed: () {
+                  rejopendialogue();
+                },
                 icon: FaIcon(
                   FontAwesomeIcons.xmark,
                   color: Colors.white,
