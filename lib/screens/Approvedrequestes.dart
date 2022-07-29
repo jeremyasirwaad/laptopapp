@@ -24,7 +24,7 @@ class _approvedrequestState extends State<approvedrequest> {
 
   Future<dynamic> fetchapproveddata() async {
     final response = await http.get(Uri.parse(
-        'http://54.160.132.147/api/users?populate[0]=laptopStatus&populate[1]=updateProgress&populate[2]=skillProgress&populate[3]=academicDetail'));
+        'http://10.0.2.2:1337/api/users?populate[0]=laptopStatus&populate[1]=updateProgress&populate[2]=skillProgress&populate[3]=academicDetail'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

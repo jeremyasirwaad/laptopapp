@@ -45,7 +45,7 @@ class Data {
 }
 
 class Attributes {
-  int? totalAmount;
+  double? totalAmount;
   String? createdAt;
   String? updatedAt;
   String? publishedAt;

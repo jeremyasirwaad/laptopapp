@@ -26,7 +26,7 @@ class _studentdataState extends State<studentdata> {
   int totalamountspent = 0;
   Future<dynamic> fetchtamount() async {
     final response =
-        await http.get(Uri.parse('http://54.160.132.147/api/total-amount'));
+        await http.get(Uri.parse('http://10.0.2.2:1337/api/total-amount'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -58,7 +58,7 @@ class _studentdataState extends State<studentdata> {
   Widget build(BuildContext context) {
     void approvereq(userid) async {
       final response = await http.put(
-          Uri.parse('http://54.160.132.147/api/users/' + userid),
+          Uri.parse('http://10.0.2.2:1337/api/users/' + userid),
           body: {"laptopStatus": "2"});
 
       if (response.statusCode == 200) {
@@ -76,7 +76,7 @@ class _studentdataState extends State<studentdata> {
     void rejectreq() async {
       final response = await http.put(
           Uri.parse(
-              'http://54.160.132.147/api/users/' + widget.data.id.toString()),
+              'http://10.0.2.2:1337/api/users/' + widget.data.id.toString()),
           body: {"laptopStatus": "1"});
 
       if (response.statusCode == 200) {
@@ -99,7 +99,7 @@ class _studentdataState extends State<studentdata> {
       var dedata = jsonEncode(datafiles);
 
       final response = await http.put(
-          Uri.parse('http://54.160.132.147/api/total-amount/'),
+          Uri.parse('http://10.0.2.2:1337/api/total-amount/'),
           headers: {"Content-Type": "application/json"},
           body: dedata);
 

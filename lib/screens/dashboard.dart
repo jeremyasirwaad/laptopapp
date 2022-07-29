@@ -27,7 +27,7 @@ class _dashboardState extends State<dashboard> {
   int wsum = 0;
   int ttotal = 0;
   List wcontribution = [];
-  int totalamountspent = 0;
+  double totalamountspent = 0;
   int totallapslent = -1;
   int totalpendinglaps = -1;
   bool gits = true;
@@ -41,7 +41,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchAlbum() async {
     final response =
-        await http.get(Uri.parse('http://54.160.132.147/api/github-data'));
+        await http.get(Uri.parse('http://10.0.2.2:1337/api/github-data'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -66,7 +66,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchtamount() async {
     final response =
-        await http.get(Uri.parse('http://54.160.132.147/api/total-amount'));
+        await http.get(Uri.parse('http://10.0.2.2:1337/api/total-amount'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -74,7 +74,7 @@ class _dashboardState extends State<dashboard> {
       var data = jsonDecode(response.body);
       final totalamt = totalamount.fromJson(data);
       setState(() {
-        totalamountspent = totalamt.data!.attributes?.totalAmount as int;
+        totalamountspent = totalamt.data!.attributes?.totalAmount as double;
         amountspents = false;
       });
 
@@ -89,7 +89,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchtreceived() async {
     final response = await http.get(Uri.parse(
-        "http://54.160.132.147/api/laptop-statuses?filters[status][\$contains]=laptopReceived&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
+        "http://10.0.2.2:1337/api/laptop-statuses?filters[status][\$contains]=laptopReceived&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -112,7 +112,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchpending() async {
     final response = await http.get(Uri.parse(
-        "http://54.160.132.147/api/laptop-statuses?filters[status][\$contains]=laptopPending&populate[0]=users&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
+        "http://10.0.2.2:1337/api/laptop-statuses?filters[status][\$contains]=laptopPending&populate[0]=users&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

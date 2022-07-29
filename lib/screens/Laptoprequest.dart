@@ -29,11 +29,12 @@ class _laptoprequestState extends State<laptoprequest> {
 
   Future<dynamic> fetchrequestdata() async {
     final response = await http.get(Uri.parse(
-        'http://54.160.132.147/api/users?populate[0]=laptopStatus&populate[1]=updateProgress&populate[2]=skillProgress&populate[3]=academicDetail'));
+        'http://10.0.2.2:1337/api/users?populate[0]=laptopStatus&populate[1]=updateProgress&populate[2]=skillProgress&populate[3]=academicDetail'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
+      print(response.body);
       var data = jsonDecode(response.body);
       final receivedcodedata = received.fromJson(data);
 
@@ -53,7 +54,7 @@ class _laptoprequestState extends State<laptoprequest> {
 
   Future<dynamic> fetchtamount() async {
     final response =
-        await http.get(Uri.parse('http://54.160.132.147/api/total-amount'));
+        await http.get(Uri.parse('http://10.0.2.2:1337/api/total-amount'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -85,7 +86,7 @@ class _laptoprequestState extends State<laptoprequest> {
   Widget build(BuildContext context) {
     void rejectreq(id) async {
       final response = await http.put(
-          Uri.parse('http://54.160.132.147/api/users/' + id.toString()),
+          Uri.parse('http://10.0.2.2:1337/api/users/' + id.toString()),
           body: {"laptopStatus": "1"});
 
       if (response.statusCode == 200) {
@@ -102,7 +103,7 @@ class _laptoprequestState extends State<laptoprequest> {
 
     void approvereq(userid) async {
       final response = await http.put(
-          Uri.parse('http://54.160.132.147/api/users/' + userid),
+          Uri.parse('http://10.0.2.2:1337/api/users/' + userid),
           body: {"laptopStatus": "2"});
 
       if (response.statusCode == 200) {
@@ -125,7 +126,7 @@ class _laptoprequestState extends State<laptoprequest> {
       var dedata = jsonEncode(datafiles);
 
       final response = await http.put(
-          Uri.parse('http://54.160.132.147/api/total-amount/'),
+          Uri.parse('http://10.0.2.2:1337/api/total-amount/'),
           headers: {"Content-Type": "application/json"},
           body: dedata);
 
