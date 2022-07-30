@@ -11,6 +11,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:http/http.dart' as http;
 import '../models/receiveddata.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import '../models//allusers.dart';
 
 class approvedrequest extends StatefulWidget {
   approvedrequest({Key? key}) : super(key: key);
@@ -20,23 +21,23 @@ class approvedrequest extends StatefulWidget {
 }
 
 class _approvedrequestState extends State<approvedrequest> {
-  List<Datar> rdata = [];
+  List<DataUser> rdata = [];
 
   Future<dynamic> fetchapproveddata() async {
-    final response = await http.get(Uri.parse(
-        'http://10.0.2.2:1337/api/users?populate[0]=laptopStatus&populate[1]=updateProgress&populate[2]=skillProgress&populate[3]=academicDetail'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:1337/api/users'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
+      print(response.body);
       var data = jsonDecode(response.body);
-      final receivedcodedata = received.fromJson(data);
+      final receivedcodedata = users.fromJson(data);
 
       setState(() {
-        rdata = receivedcodedata.datar!
-            .where(
-                (element) => element.laptopStatus!.status == "laptopReceived")
-            .toList();
+        rdata = receivedcodedata.data
+            ?.where((element) => element.laptopStatus == "Approved")
+            .toList() as List<DataUser>;
 
         // rdata = receivedcodedata.datar as List<Datar>;
       });
@@ -99,10 +100,10 @@ class _approvedrequestState extends State<approvedrequest> {
               ...List.generate(
                   rdata.length,
                   (index) => Requestscards(
-                      rdata[index].displayName as String,
-                      int.parse(rdata[index].academicDetail?.batch as String),
-                      rdata[index].academicDetail?.department as String,
-                      rdata[index].academicDetail?.collegeEssay as String,
+                      rdata[index].username as String,
+                      int.parse(rdata[index].batch.toString() as String),
+                      rdata[index].department as String,
+                      rdata[index].collegeEssay as String,
                       rdata[index])),
 
               // Requestscards(),
@@ -121,7 +122,7 @@ class Requestscards extends StatelessWidget {
   final int batch;
   final String Dept;
   final String shortstory;
-  final Datar data;
+  final DataUser data;
 
   Requestscards(this.fname, this.batch, this.Dept, this.shortstory, this.data);
 

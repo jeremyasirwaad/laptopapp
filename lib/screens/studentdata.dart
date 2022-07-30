@@ -12,10 +12,11 @@ import 'package:http/http.dart' as http;
 import '../models/totalamount.dart';
 import './Approvedrequestes.dart';
 import '../screens/Laptoprequest.dart';
+import '../models/allusers.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
 class studentdata extends StatefulWidget {
-  final Datar data;
+  final DataUser data;
   studentdata(this.data);
 
   @override
@@ -59,7 +60,7 @@ class _studentdataState extends State<studentdata> {
     void approvereq(userid) async {
       final response = await http.put(
           Uri.parse('http://10.0.2.2:1337/api/users/' + userid),
-          body: {"laptopStatus": "2"});
+          body: {"LaptopStatus": "Approved"});
 
       if (response.statusCode == 200) {
         Navigator.push(
@@ -77,7 +78,7 @@ class _studentdataState extends State<studentdata> {
       final response = await http.put(
           Uri.parse(
               'http://10.0.2.2:1337/api/users/' + widget.data.id.toString()),
-          body: {"laptopStatus": "1"});
+          body: {"LaptopStatus": "Rejected"});
 
       if (response.statusCode == 200) {
         Navigator.push(
@@ -214,7 +215,7 @@ class _studentdataState extends State<studentdata> {
         ),
       ),
       appBar: AppBar(
-        title: Text(widget.data.displayName as String),
+        title: Text(widget.data.username as String),
       ),
       drawer: Customdrawer(),
       body: SingleChildScrollView(
@@ -245,7 +246,7 @@ class _studentdataState extends State<studentdata> {
                       width: 150,
                       child: CircleAvatar(
                         backgroundImage:
-                            NetworkImage(widget.data.profilePicture as String),
+                            NetworkImage(widget.data.imgsrc as String),
                       ),
                     ),
                     Container(
@@ -264,9 +265,7 @@ class _studentdataState extends State<studentdata> {
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text(
-                                  "Batch : " +
-                                      widget.data.academicDetail!.batch
-                                          .toString(),
+                                  "Batch : " + widget.data.batch.toString(),
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -282,14 +281,13 @@ class _studentdataState extends State<studentdata> {
                                 // Text("CGPA : 9.0"),
 
                                 Text(
-                                  "Native : " +
-                                      widget.data.academicDetail!.native
-                                          .toString(),
+                                  "Native : " + widget.data.native.toString(),
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text(
-                                  "Interest : Fullstack",
+                                  "Interest : " +
+                                      widget.data.interest.toString(),
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -323,8 +321,7 @@ class _studentdataState extends State<studentdata> {
                     ),
                     Container(
                       padding: EdgeInsets.all(15),
-                      child: Text(
-                          widget.data.academicDetail!.collegeEssay as String),
+                      child: Text(widget.data.collegeEssay as String),
                     )
                   ]),
                 ),
@@ -362,8 +359,7 @@ class _studentdataState extends State<studentdata> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "PhoneNo : " +
-                                    widget.data.phoneNumber.toString(),
+                                "PhoneNo : " + widget.data.phno.toString(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -421,17 +417,14 @@ class _studentdataState extends State<studentdata> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "CGPA : " +
-                                        widget.data.academicDetail!.cgpa
-                                            .toString(),
+                                    "CGPA : " + widget.data.cgpa.toString(),
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
                                   ),
                                   Text(
                                     "10th-Score : " +
-                                        widget.data.academicDetail!.marks10th
-                                            .toString() +
+                                        widget.data.marks10th.toString() +
                                         "%",
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
@@ -439,8 +432,8 @@ class _studentdataState extends State<studentdata> {
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      final url = widget.data.academicDetail!
-                                          .marksheet10th as String;
+                                      final url =
+                                          widget.data.report10th as String;
                                       if (await canLaunch(url)) {
                                         await launch(url, forceSafariVC: false);
                                       }
@@ -475,25 +468,22 @@ class _studentdataState extends State<studentdata> {
                                   // Text("CGPA : 9.0"),
                                   Text(
                                     "12th-Score : " +
-                                        widget.data.academicDetail!.marks12th
-                                            .toString() +
+                                        widget.data.marks12th.toString() +
                                         "%",
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
                                   ),
                                   Text(
-                                    "DOB : " +
-                                        widget.data.academicDetail!.dob
-                                            .toString(),
+                                    "DOB : " + widget.data.dob.toString(),
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      final url = widget.data.academicDetail!
-                                          .marksheet12th as String;
+                                      final url =
+                                          widget.data.report12th as String;
                                       if (await canLaunch(url)) {
                                         await launch(url, forceSafariVC: false);
                                       }

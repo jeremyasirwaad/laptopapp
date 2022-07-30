@@ -5,10 +5,11 @@ import '../CusDrawer.dart';
 import '../models/receiveddata.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../models//allusers.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
 class studentdata2 extends StatelessWidget {
-  final Datar data;
+  final DataUser data;
 
   studentdata2(this.data);
 
@@ -45,7 +46,7 @@ class studentdata2 extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: Text(data.displayName as String),
+        title: Text(data.username as String),
       ),
       drawer: Customdrawer(),
       body: SingleChildScrollView(
@@ -76,7 +77,7 @@ class studentdata2 extends StatelessWidget {
                       width: 150,
                       child: CircleAvatar(
                         backgroundImage:
-                            NetworkImage(data.profilePicture as String),
+                            NetworkImage(data.imgsrc as String),
                       ),
                     ),
                     Container(
@@ -96,7 +97,7 @@ class studentdata2 extends StatelessWidget {
                                 ),
                                 Text(
                                   "Batch : " +
-                                      data.academicDetail!.batch.toString(),
+                                      data.batch.toString(),
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -113,7 +114,7 @@ class studentdata2 extends StatelessWidget {
 
                                 Text(
                                   "Native : " +
-                                      data.academicDetail!.native.toString(),
+                                      data.native.toString(),
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -152,7 +153,7 @@ class studentdata2 extends StatelessWidget {
                     ),
                     Container(
                       padding: EdgeInsets.all(15),
-                      child: Text(data.academicDetail!.collegeEssay as String),
+                      child: Text(data.collegeEssay as String),
                     )
                   ]),
                 ),
@@ -190,7 +191,7 @@ class studentdata2 extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "PhoneNo : " + data.phoneNumber.toString(),
+                                "PhoneNo : " + data.phno.toString(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -249,14 +250,14 @@ class studentdata2 extends StatelessWidget {
                                 children: [
                                   Text(
                                     "CGPA : " +
-                                        data.academicDetail!.cgpa.toString(),
+                                        data.cgpa.toString(),
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
                                   ),
                                   Text(
                                     "10th-Score : " +
-                                        data.academicDetail!.marks10th
+                                        data.marks10th
                                             .toString() +
                                         "%",
                                     style: GoogleFonts.roboto(
@@ -265,8 +266,7 @@ class studentdata2 extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      final url = data.academicDetail!
-                                          .marksheet10th as String;
+                                      final url = data.report10th as String;
                                       if (await canLaunch(url)) {
                                         await launch(url, forceSafariVC: false);
                                       }
@@ -301,7 +301,7 @@ class studentdata2 extends StatelessWidget {
                                   // Text("CGPA : 9.0"),
                                   Text(
                                     "12th-Score : " +
-                                        data.academicDetail!.marks12th
+                                        data.marks12th
                                             .toString() +
                                         "%",
                                     style: GoogleFonts.roboto(
@@ -310,15 +310,14 @@ class studentdata2 extends StatelessWidget {
                                   ),
                                   Text(
                                     "DOB : " +
-                                        data.academicDetail!.dob.toString(),
+                                        data.dob.toString(),
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      final url = data.academicDetail!
-                                          .marksheet12th as String;
+                                      final url = data.report12th as String;
                                       if (await canLaunch(url)) {
                                         await launch(url, forceSafariVC: false);
                                       }
