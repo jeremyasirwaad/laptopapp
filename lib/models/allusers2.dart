@@ -1,21 +1,21 @@
-class users {
-  List<DataUser>? data;
+class usertracking {
+  List<DataUser>? dataUser;
 
-  users({this.data});
+  usertracking({this.dataUser});
 
-  users.fromJson(List json) {
+  usertracking.fromJson(List json) {
     if (json != null) {
-      data = <DataUser>[];
+      dataUser = <DataUser>[];
       json.forEach((v) {
-        data!.add(new DataUser.fromJson(v));
+        dataUser!.add(new DataUser.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    if (this.dataUser != null) {
+      data['dataUser'] = this.dataUser!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -28,13 +28,9 @@ class DataUser {
   String? provider;
   bool? confirmed;
   bool? blocked;
-  String? createdAt;
-  String? updatedAt;
-  String? laptopStatus;
   String? rollNo;
   int? batch;
   String? department;
-  String? dob;
   String? collegeEssay;
   String? cgpa;
   String? native;
@@ -44,12 +40,19 @@ class DataUser {
   String? report10th;
   String? address;
   String? interest;
-  String? laptopdateReceived;
-  String? laptopDateApproved;
+  String? dob;
   String? laptopCost;
   bool? laptopReceivedByStudent;
+  String? laptopStatus;
   String? phno;
   String? imgsrc;
+  String? laptopDateApproved;
+  String? laptopdateReceived;
+  Null? lastUpdate;
+  List<StatusUpdate>? statusUpdate;
+  String? createdAt;
+  String? updatedAt;
+  String? githubUsername;
 
   DataUser(
       {this.id,
@@ -58,13 +61,9 @@ class DataUser {
       this.provider,
       this.confirmed,
       this.blocked,
-      this.createdAt,
-      this.updatedAt,
-      this.laptopStatus,
       this.rollNo,
       this.batch,
       this.department,
-      this.dob,
       this.collegeEssay,
       this.cgpa,
       this.native,
@@ -74,12 +73,19 @@ class DataUser {
       this.report10th,
       this.address,
       this.interest,
-      this.laptopdateReceived,
-      this.laptopDateApproved,
+      this.dob,
       this.laptopCost,
-      required this.laptopReceivedByStudent,
+      this.laptopReceivedByStudent,
+      this.laptopStatus,
+      this.phno,
       this.imgsrc,
-      this.phno});
+      this.laptopDateApproved,
+      this.laptopdateReceived,
+      this.lastUpdate,
+      this.statusUpdate,
+      this.createdAt,
+      this.updatedAt,
+      this.githubUsername});
 
   DataUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -88,13 +94,9 @@ class DataUser {
     provider = json['provider'];
     confirmed = json['confirmed'];
     blocked = json['blocked'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    laptopStatus = json['LaptopStatus'];
     rollNo = json['RollNo'];
     batch = json['batch'];
     department = json['department'];
-    dob = json['dob'];
     collegeEssay = json['CollegeEssay'];
     cgpa = json['cgpa'];
     native = json['Native'];
@@ -104,12 +106,24 @@ class DataUser {
     report10th = json['Report_10th'];
     address = json['address'];
     interest = json['interest'];
-    laptopdateReceived = json['LaptopdateReceived'];
-    laptopDateApproved = json['LaptopDateApproved'];
+    dob = json['dob'];
     laptopCost = json['LaptopCost'];
     laptopReceivedByStudent = json['LaptopReceivedByStudent'];
+    laptopStatus = json['LaptopStatus'];
     phno = json['phno'];
     imgsrc = json['imgsrc'];
+    laptopDateApproved = json['LaptopDateApproved'];
+    laptopdateReceived = json['LaptopdateReceived'];
+    lastUpdate = json['lastUpdate'];
+    if (json['statusUpdate'] != null) {
+      statusUpdate = <StatusUpdate>[];
+      json['statusUpdate'].forEach((v) {
+        statusUpdate!.add(new StatusUpdate.fromJson(v));
+      });
+    }
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    githubUsername = json['githubUsername'];
   }
 
   Map<String, dynamic> toJson() {
@@ -120,13 +134,9 @@ class DataUser {
     data['provider'] = this.provider;
     data['confirmed'] = this.confirmed;
     data['blocked'] = this.blocked;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['LaptopStatus'] = this.laptopStatus;
     data['RollNo'] = this.rollNo;
     data['batch'] = this.batch;
     data['department'] = this.department;
-    data['dob'] = this.dob;
     data['CollegeEssay'] = this.collegeEssay;
     data['cgpa'] = this.cgpa;
     data['Native'] = this.native;
@@ -136,12 +146,40 @@ class DataUser {
     data['Report_10th'] = this.report10th;
     data['address'] = this.address;
     data['interest'] = this.interest;
-    data['LaptopdateReceived'] = this.laptopdateReceived;
-    data['LaptopDateApproved'] = this.laptopDateApproved;
+    data['dob'] = this.dob;
     data['LaptopCost'] = this.laptopCost;
     data['LaptopReceivedByStudent'] = this.laptopReceivedByStudent;
-    data['imgsrc'] = this.imgsrc;
+    data['LaptopStatus'] = this.laptopStatus;
     data['phno'] = this.phno;
+    data['imgsrc'] = this.imgsrc;
+    data['LaptopDateApproved'] = this.laptopDateApproved;
+    data['LaptopdateReceived'] = this.laptopdateReceived;
+    data['lastUpdate'] = this.lastUpdate;
+    if (this.statusUpdate != null) {
+      data['statusUpdate'] = this.statusUpdate!.map((v) => v.toJson()).toList();
+    }
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['githubUsername'] = this.githubUsername;
+    return data;
+  }
+}
+
+class StatusUpdate {
+  String? date;
+  String? content;
+
+  StatusUpdate({this.date, this.content});
+
+  StatusUpdate.fromJson(Map<String, dynamic> json) {
+    date = json['date'];
+    content = json['content'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['date'] = this.date;
+    data['content'] = this.content;
     return data;
   }
 }

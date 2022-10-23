@@ -90,9 +90,10 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchtamount() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:1337/api/total-amount'));
+        await http.get(Uri.parse('http://10.0.2.2:1337/api/amount'));
 
     if (response.statusCode == 200) {
+      print("hello");
       // If the server did return a 200 OK response,
       // then parse the JSON.
       var data = jsonDecode(response.body);
@@ -159,7 +160,7 @@ class _dashboardState extends State<dashboard> {
 
   @override
   void initState() {
-    // fetchAlbum();
+    fetchAlbum();
     fetchtamount();
     // fetchtreceived();
     // fetchpending();

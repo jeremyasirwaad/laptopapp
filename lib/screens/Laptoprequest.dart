@@ -16,6 +16,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import './Laptoprequest.dart';
 import './Approvedrequestes.dart';
 import '../models/allusers.dart';
+import 'package:intl/intl.dart';
 
 class laptoprequest extends StatefulWidget {
   laptoprequest({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class laptoprequest extends StatefulWidget {
 class _laptoprequestState extends State<laptoprequest> {
   List<DataUser> rdata = [];
   int totalamountspent = 0;
-
+  var isfetched = false;
   Future<dynamic> fetchrequestdata() async {
     final response =
         await http.get(Uri.parse('http://10.0.2.2:1337/api/users'));
@@ -45,6 +46,7 @@ class _laptoprequestState extends State<laptoprequest> {
             .toList() as List<DataUser>;
 
         // rdata = receivedcodedata.datar as List<Datar>;
+        isfetched = true;
       });
     } else {
       // If the server did not return a 200 OK response,
@@ -55,7 +57,7 @@ class _laptoprequestState extends State<laptoprequest> {
 
   Future<dynamic> fetchtamount() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:1337/api/total-amount'));
+        await http.get(Uri.parse('http://10.0.2.2:1337/api/amount'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -85,6 +87,12 @@ class _laptoprequestState extends State<laptoprequest> {
 
   @override
   Widget build(BuildContext context) {
+    String getdate() {
+      DateTime now = DateTime.now();
+      String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+      return formattedDate;
+    }
+
     void rejectreq(id) async {
       final response = await http.put(
           Uri.parse('http://10.0.2.2:1337/api/users/' + id.toString()),
@@ -103,7 +111,11 @@ class _laptoprequestState extends State<laptoprequest> {
     }
 
     void approvereq(userid, amount) async {
-      Map datafile = {'LaptopStatus': 'Approved', 'LaptopCost': amount};
+      Map datafile = {
+        'LaptopStatus': 'Approved',
+        'LaptopCost': amount,
+        'LaptopDateApproved': getdate().toString()
+      };
 
       var sendingdata = json.encode(datafile);
 
@@ -132,7 +144,7 @@ class _laptoprequestState extends State<laptoprequest> {
       var dedata = jsonEncode(datafiles);
 
       final response = await http.put(
-          Uri.parse('http://10.0.2.2:1337/api/total-amount/'),
+          Uri.parse('http://10.0.2.2:1337/api/amount/'),
           headers: {"Content-Type": "application/json"},
           body: dedata);
 
@@ -219,64 +231,87 @@ class _laptoprequestState extends State<laptoprequest> {
             ));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Laptop Requests"),
-      ),
-      drawer: Customdrawer(),
-      body: rdata.length == 0
-          ? Center(
-              child: SpinKitThreeBounce(
-                color: Colors.indigo,
-                size: 50,
-              ),
-            )
-          : ListView(children: [
-              SizedBox(
-                height: 20,
-              ),
-              Row(children: [
-                Padding(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Text(
-                      "Requests",
-                      style: GoogleFonts.rubik(fontSize: 20),
-                    )),
-                Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Container(
-                      height: 30,
-                      width: 30,
-                      color: Colors.indigo,
-                      child: Center(
-                        child: Text(rdata.length.toString(),
-                            style: GoogleFonts.rubik(
-                              color: Colors.white,
-                            )),
-                      ),
+        appBar: AppBar(
+          title: Text("Laptop Requests"),
+        ),
+        drawer: Customdrawer(),
+        body: !isfetched
+            ? Center(
+                child: SpinKitThreeBounce(
+                  color: Colors.indigo,
+                  size: 50,
+                ),
+              )
+            : rdata.isEmpty
+                ? Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    // color: Colors.black,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "No new ",
+                            style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 28,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            "Requests !",
+                            style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 28,
+                                color: Colors.indigo),
+                          )
+                        ]))
+                : ListView(children: [
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
-                )
-              ]),
-              ...List.generate(
-                rdata.length,
-                (index) => Requestscards(
-                    rdata[index].username as String,
-                    int.parse(rdata[index].batch.toString() as String),
-                    rdata[index].department as String,
-                    rdata[index].collegeEssay as String,
-                    rdata[index],
-                    opendialogue,
-                    rejopendialogue),
-              ),
+                    Row(children: [
+                      Padding(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Text(
+                            "Requests",
+                            style: GoogleFonts.rubik(fontSize: 20),
+                          )),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            color: Colors.indigo,
+                            child: Center(
+                              child: Text(rdata.length.toString(),
+                                  style: GoogleFonts.rubik(
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ),
+                        ),
+                      )
+                    ]),
+                    ...List.generate(
+                      rdata.length,
+                      (index) => Requestscards(
+                          rdata[index].username as String,
+                          int.parse(rdata[index].batch.toString() as String),
+                          rdata[index].department as String,
+                          rdata[index].collegeEssay as String,
+                          rdata[index],
+                          opendialogue,
+                          rejopendialogue),
+                    )
 
-              // Requestscards(),
-              // Requestscards(),
-              // Requestscards(),
-              // Requestscards(),
-            ]),
-    );
+                    // Requestscards(),
+                    // Requestscards(),
+                    // Requestscards(),
+                    // Requestscards(),
+                  ]));
   }
 }
 

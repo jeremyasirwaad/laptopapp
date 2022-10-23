@@ -6,13 +6,21 @@ import '../models/receiveddata.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models//allusers.dart';
+import '../screens/Approvedrequestes.dart';
+import 'package:http/http.dart' as http;
+import '../screens/Laptoprequest.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
-class studentdata2 extends StatelessWidget {
+class studentdata2 extends StatefulWidget {
   final DataUser data;
 
   studentdata2(this.data);
 
+  @override
+  State<studentdata2> createState() => _studentdata2State();
+}
+
+class _studentdata2State extends State<studentdata2> {
   Future<void> _launchUrl(String url) async {
     Uri data = Uri.parse(url);
     if (!await launchUrl(data)) {
@@ -22,6 +30,57 @@ class studentdata2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void rejectreq() async {
+      final response = await http.put(
+          Uri.parse(
+              'http://10.0.2.2:1337/api/users/' + widget.data.id.toString()),
+          body: {"LaptopStatus": "Rejected"});
+
+      if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => laptoprequest()),
+        );
+      } else {
+        throw Exception('Failed to load album');
+      }
+
+      // print(userid);
+    }
+
+    Future rejopendialogue() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Confirm !"),
+              content:
+                  Text("Are you sure that you want to decline this request"),
+              actions: [
+                TextButton(
+                    // color: Colors.indigo,
+                    // textColor: Colors.white,
+                    onPressed: () {
+                      // print(amountcontroller.text);
+                      // approvereq(userid);
+                      // updatetotalamount(int.parse(amountcontroller.text));
+                      // print(userid);
+
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("No")),
+                ElevatedButton(
+                    // color: Colors.indigo,
+                    // textColor: Colors.white,
+                    onPressed: () {
+                      // print(amountcontroller.text);
+                      // approvereq(userid);
+                      // updatetotalamount(int.parse(amountcontroller.text));
+                      rejectreq();
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Yes"))
+              ],
+            ));
+
     return Scaffold(
       bottomNavigationBar: Container(
         height: 60,
@@ -37,7 +96,9 @@ class studentdata2 extends StatelessWidget {
           children: [
             IconButton(
                 enableFeedback: false,
-                onPressed: () {},
+                onPressed: () {
+                  rejopendialogue();
+                },
                 icon: FaIcon(
                   FontAwesomeIcons.xmark,
                   color: Colors.white,
@@ -46,7 +107,7 @@ class studentdata2 extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: Text(data.username as String),
+        title: Text(widget.data.username as String),
       ),
       drawer: Customdrawer(),
       body: SingleChildScrollView(
@@ -77,7 +138,7 @@ class studentdata2 extends StatelessWidget {
                       width: 150,
                       child: CircleAvatar(
                         backgroundImage:
-                            NetworkImage(data.imgsrc as String),
+                            NetworkImage(widget.data.imgsrc as String),
                       ),
                     ),
                     Container(
@@ -96,8 +157,7 @@ class studentdata2 extends StatelessWidget {
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text(
-                                  "Batch : " +
-                                      data.batch.toString(),
+                                  "Batch : " + widget.data.batch.toString(),
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -113,8 +173,7 @@ class studentdata2 extends StatelessWidget {
                                 // Text("CGPA : 9.0"),
 
                                 Text(
-                                  "Native : " +
-                                      data.native.toString(),
+                                  "Native : " + widget.data.native.toString(),
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -128,6 +187,117 @@ class studentdata2 extends StatelessWidget {
                           ],
                         )),
                   ]),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                elevation: 7,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    color: Colors.indigo,
+                    padding: EdgeInsets.all(15),
+                    // height: 200,
+                    child: Column(children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 15),
+                        width: double.infinity,
+                        child: Text(
+                          "Laptop Info",
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.white),
+                        ),
+                      ),
+                      Container(
+                          // height: 120,
+                          margin: EdgeInsets.only(top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    "Laptop Price : " +
+                                        "₹" +
+                                        widget.data.laptopCost.toString(),
+                                    style: GoogleFonts.roboto(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    "Appv Date : " +
+                                        widget.data.laptopDateApproved
+                                            .toString()
+                                            .substring(0, 10),
+                                    style: GoogleFonts.roboto(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  // Text("Age : 18")
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  // Text("Department : IT"),
+                                  // Text("CGPA : 9.0"),
+                                  Text(
+                                    "Laptop Received : " +
+                                        (widget.data.laptopReceivedByStudent ==
+                                                false
+                                            ? "No"
+                                            : "Yes"),
+                                    style: GoogleFonts.roboto(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    "Date Rec : " +
+                                        (widget.data.laptopdateReceived == null
+                                            ? "  -----"
+                                            : widget.data.laptopdateReceived
+                                                .toString()
+                                                .substring(0, 10)),
+                                    style: GoogleFonts.roboto(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                ],
+                              )
+                            ],
+                          )),
+                    ]),
+                  ),
                 ),
               ),
               SizedBox(
@@ -153,7 +323,7 @@ class studentdata2 extends StatelessWidget {
                     ),
                     Container(
                       padding: EdgeInsets.all(15),
-                      child: Text(data.collegeEssay as String),
+                      child: Text(widget.data.collegeEssay as String),
                     )
                   ]),
                 ),
@@ -191,7 +361,7 @@ class studentdata2 extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "PhoneNo : " + data.phno.toString(),
+                                "PhoneNo : " + widget.data.phno.toString(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -200,7 +370,7 @@ class studentdata2 extends StatelessWidget {
                                 height: 10,
                               ),
                               Text(
-                                "Email : " + data.email.toString(),
+                                "Email : " + widget.data.email.toString(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -249,16 +419,14 @@ class studentdata2 extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "CGPA : " +
-                                        data.cgpa.toString(),
+                                    "CGPA : " + widget.data.cgpa.toString(),
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
                                   ),
                                   Text(
                                     "10th-Score : " +
-                                        data.marks10th
-                                            .toString() +
+                                        widget.data.marks10th.toString() +
                                         "%",
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
@@ -266,7 +434,8 @@ class studentdata2 extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      final url = data.report10th as String;
+                                      final url =
+                                          widget.data.report10th as String;
                                       if (await canLaunch(url)) {
                                         await launch(url, forceSafariVC: false);
                                       }
@@ -301,23 +470,22 @@ class studentdata2 extends StatelessWidget {
                                   // Text("CGPA : 9.0"),
                                   Text(
                                     "12th-Score : " +
-                                        data.marks12th
-                                            .toString() +
+                                        widget.data.marks12th.toString() +
                                         "%",
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
                                   ),
                                   Text(
-                                    "DOB : " +
-                                        data.dob.toString(),
+                                    "DOB : " + widget.data.dob.toString(),
                                     style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white),
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      final url = data.report12th as String;
+                                      final url =
+                                          widget.data.report12th as String;
                                       if (await canLaunch(url)) {
                                         await launch(url, forceSafariVC: false);
                                       }
@@ -343,11 +511,11 @@ class studentdata2 extends StatelessWidget {
                                 ],
                               )
                             ],
-                          ))
+                          )),
                     ]),
                   ),
                 ),
-              )
+              ),
             ]),
           ),
         ),

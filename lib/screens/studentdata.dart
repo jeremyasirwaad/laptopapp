@@ -13,6 +13,8 @@ import '../models/totalamount.dart';
 import './Approvedrequestes.dart';
 import '../screens/Laptoprequest.dart';
 import '../models/allusers.dart';
+import 'package:intl/intl.dart';
+
 // import 'package:permission_handler/permission_handler.dart';
 
 class studentdata extends StatefulWidget {
@@ -27,7 +29,7 @@ class _studentdataState extends State<studentdata> {
   int totalamountspent = 0;
   Future<dynamic> fetchtamount() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:1337/api/total-amount'));
+        await http.get(Uri.parse('http://10.0.2.2:1337/api/amount'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -57,10 +59,24 @@ class _studentdataState extends State<studentdata> {
 
   @override
   Widget build(BuildContext context) {
-    void approvereq(userid) async {
+    String getdate() {
+      DateTime now = DateTime.now();
+      String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+      return formattedDate;
+    }
+
+    void approvereq(userid, amount) async {
+      Map datafile = {
+        'LaptopStatus': 'Approved',
+        'LaptopCost': amount,
+        'LaptopDateApproved': getdate().toString()
+      };
+
+      var dataformjson = json.encode(datafile);
       final response = await http.put(
           Uri.parse('http://10.0.2.2:1337/api/users/' + userid),
-          body: {"LaptopStatus": "Approved"});
+          headers: {"Content-Type": "application/json"},
+          body: dataformjson);
 
       if (response.statusCode == 200) {
         Navigator.push(
@@ -100,7 +116,7 @@ class _studentdataState extends State<studentdata> {
       var dedata = jsonEncode(datafiles);
 
       final response = await http.put(
-          Uri.parse('http://10.0.2.2:1337/api/total-amount/'),
+          Uri.parse('http://10.0.2.2:1337/api/amount/'),
           headers: {"Content-Type": "application/json"},
           body: dedata);
 
@@ -138,7 +154,7 @@ class _studentdataState extends State<studentdata> {
                     textColor: Colors.white,
                     onPressed: () {
                       print(amountcontroller.text);
-                      approvereq(userid);
+                      approvereq(userid, int.parse(amountcontroller.text));
                       updatetotalamount(int.parse(amountcontroller.text));
                       // print(userid);
                       // Navigator.of(context).pop();
