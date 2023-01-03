@@ -33,7 +33,7 @@ class _studentdata2State extends State<studentdata2> {
     void rejectreq() async {
       final response = await http.put(
           Uri.parse(
-              'http://10.0.2.2:1337/api/users/' + widget.data.id.toString()),
+              'https://laptopapp.onrender.com/api/users/' + widget.data.id.toString()),
           body: {"LaptopStatus": "Rejected"});
 
       if (response.statusCode == 200) {

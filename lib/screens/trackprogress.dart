@@ -32,11 +32,9 @@ class _trackprogressState extends State<trackprogress> {
 
   Future<dynamic> fetchapproveddata() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:1337/api/users'));
+        await http.get(Uri.parse('https://laptopapp.onrender.com/api/users'));
 
     if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
       print(response.body);
       var data = jsonDecode(response.body);
       final receivedcodedata = usertracking.fromJson(data);

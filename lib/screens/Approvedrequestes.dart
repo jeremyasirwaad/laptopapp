@@ -28,7 +28,7 @@ class _approvedrequestState extends State<approvedrequest> {
 
   Future<dynamic> fetchapproveddata() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:1337/api/users'));
+        await http.get(Uri.parse('https://laptopapp.onrender.com/api/users'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -62,7 +62,7 @@ class _approvedrequestState extends State<approvedrequest> {
   Widget build(BuildContext context) {
     void rejectreq(id) async {
       final response = await http.put(
-          Uri.parse('http://10.0.2.2:1337/api/users/' + id.toString()),
+          Uri.parse('https://laptopapp.onrender.com/api/users/' + id.toString()),
           body: {"LaptopStatus": "Rejected"});
 
       if (response.statusCode == 200) {

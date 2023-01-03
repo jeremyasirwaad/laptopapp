@@ -43,7 +43,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> allusers() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:1337/api/users'));
+        await http.get(Uri.parse('https://laptopapp.onrender.com/api/users'));
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -67,7 +67,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchAlbum() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:1337/api/github-data'));
+        await http.get(Uri.parse('https://laptopapp.onrender.com/api/github-data'));
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -90,7 +90,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchtamount() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:1337/api/amount'));
+        await http.get(Uri.parse('https://laptopapp.onrender.com/api/amount'));
 
     if (response.statusCode == 200) {
       print("hello");
@@ -114,7 +114,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchtreceived() async {
     final response = await http.get(Uri.parse(
-        "http://10.0.2.2:1337/api/laptop-statuses?filters[status][\$contains]=laptopReceived&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
+        "https://laptopapp.onrender.com/api/laptop-statuses?filters[status][\$contains]=laptopReceived&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -137,7 +137,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchpending() async {
     final response = await http.get(Uri.parse(
-        "http://10.0.2.2:1337/api/laptop-statuses?filters[status][\$contains]=laptopPending&populate[0]=users&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
+        "https://laptopapp.onrender.com/api/laptop-statuses?filters[status][\$contains]=laptopPending&populate[0]=users&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -203,90 +203,28 @@ class _dashboardState extends State<dashboard> {
                             fontWeight: FontWeight.w500, fontSize: 14),
                       ),
                     ),
-                    Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          margin: EdgeInsets.only(left: 40, top: 20),
-                          child: FittedBox(
-                            fit: BoxFit.fitWidth,
-                            child: totallapslent == -1
-                                ? SpinKitThreeBounce(
-                                    size: 25,
-                                    color: Colors.indigo,
-                                  )
-                                : Text(
-                                    totallapslent.toString(),
-                                    style: GoogleFonts.rubik(
-                                        fontWeight: FontWeight.w100,
-                                        fontSize: 60,
-                                        color: Colors.indigo),
-                                  ),
-                          ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        margin: EdgeInsets.only( top: 20),
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: totallapslent == -1
+                              ? SpinKitThreeBounce(
+                                  size: 25,
+                                  color: Colors.indigo,
+                                )
+                              : Text(
+                                  totallapslent.toString(),
+                                  style: GoogleFonts.rubik(
+                                      fontWeight: FontWeight.w100,
+                                      fontSize: 60,
+                                      color: Colors.indigo),
+                                ),
                         ),
                       ),
                     ),
-                    Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                            margin: EdgeInsets.only(right: 25),
-                            // color: Colors.black,
-                            width: 120,
-                            height: 120,
-                            child: PieChart(
-                              PieChartData(
-                                  borderData: FlBorderData(show: false),
-                                  sections: [
-                                    PieChartSectionData(
-                                        color: Colors.teal,
-                                        value: 4,
-                                        title: "IT",
-                                        titleStyle: TextStyle(fontSize: 10)),
-                                    PieChartSectionData(
-                                        color: Colors.blue,
-                                        value: 1,
-                                        title: "CS",
-                                        titleStyle: TextStyle(fontSize: 10)),
-                                    PieChartSectionData(
-                                        color: Colors.green,
-                                        value: 1,
-                                        title: "ECE",
-                                        titleStyle: TextStyle(fontSize: 10)),
-                                    PieChartSectionData(
-                                        color: Colors.yellow,
-                                        value: 0,
-                                        title: "EEE",
-                                        titleStyle: TextStyle(fontSize: 10)),
-                                    PieChartSectionData(
-                                        color: Colors.purple,
-                                        value: 2,
-                                        title: "Civil",
-                                        titleStyle: TextStyle(fontSize: 10)),
-                                    PieChartSectionData(
-                                        color: Colors.orange,
-                                        value: 1,
-                                        title: "IBT",
-                                        titleStyle: TextStyle(fontSize: 10)),
-                                    PieChartSectionData(
-                                        color: Colors.pink,
-                                        value: 0,
-                                        title: "EIE",
-                                        titleStyle: TextStyle(fontSize: 10)),
-                                    PieChartSectionData(
-                                        color: Colors.red,
-                                        value: 0,
-                                        title: "Mech",
-                                        titleStyle: TextStyle(fontSize: 10)),
-                                    PieChartSectionData(
-                                        color: Colors.cyan,
-                                        value: 0,
-                                        title: "Prod",
-                                        titleStyle: TextStyle(fontSize: 10)),
-                                  ]),
-                            )),
-                      ),
-                    ),
+                   
                   ]),
                 ),
                 // color: Colors.black,
@@ -388,7 +326,7 @@ class _dashboardState extends State<dashboard> {
                                                   horizontal: 10),
                                               child: Text(
                                                 totalamountspent.toString() +
-                                                    "rs",
+                                                    "₹",
                                                 style: GoogleFonts.rubik(
                                                     fontWeight: FontWeight.w100,
                                                     fontSize: 60,

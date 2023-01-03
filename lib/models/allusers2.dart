@@ -48,7 +48,6 @@ class DataUser {
   String? imgsrc;
   String? laptopDateApproved;
   String? laptopdateReceived;
-  Null? lastUpdate;
   List<StatusUpdate>? statusUpdate;
   String? createdAt;
   String? updatedAt;
@@ -81,7 +80,6 @@ class DataUser {
       this.imgsrc,
       this.laptopDateApproved,
       this.laptopdateReceived,
-      this.lastUpdate,
       this.statusUpdate,
       this.createdAt,
       this.updatedAt,
@@ -114,7 +112,7 @@ class DataUser {
     imgsrc = json['imgsrc'];
     laptopDateApproved = json['LaptopDateApproved'];
     laptopdateReceived = json['LaptopdateReceived'];
-    lastUpdate = json['lastUpdate'];
+
     if (json['statusUpdate'] != null) {
       statusUpdate = <StatusUpdate>[];
       json['statusUpdate'].forEach((v) {
@@ -154,7 +152,6 @@ class DataUser {
     data['imgsrc'] = this.imgsrc;
     data['LaptopDateApproved'] = this.laptopDateApproved;
     data['LaptopdateReceived'] = this.laptopdateReceived;
-    data['lastUpdate'] = this.lastUpdate;
     if (this.statusUpdate != null) {
       data['statusUpdate'] = this.statusUpdate!.map((v) => v.toJson()).toList();
     }

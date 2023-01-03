@@ -24,7 +24,7 @@ class _TrackprogressuserState extends State<Trackprogressuser> {
 
   Future<dynamic> allusers() async {
     final response = await http.get(Uri.parse(
-        'http://10.0.2.2:1337/api/github-data/' +
+        'https://laptopapp.onrender.com/api/github-data/' +
             (widget.rdata.githubUsername as String)));
 
     if (response.statusCode == 200) {
