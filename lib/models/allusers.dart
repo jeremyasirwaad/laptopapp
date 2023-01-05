@@ -42,6 +42,8 @@ class DataUser {
   String? marks12th;
   String? report12th;
   String? report10th;
+  String? otherreport;
+  String? receipt;
   String? address;
   String? interest;
   String? laptopdateReceived;
@@ -72,6 +74,8 @@ class DataUser {
       this.marks12th,
       this.report12th,
       this.report10th,
+      this.otherreport,
+      this.receipt,
       this.address,
       this.interest,
       this.laptopdateReceived,
@@ -102,6 +106,8 @@ class DataUser {
     marks12th = json['Marks_12th'];
     report12th = json['Report_12th'];
     report10th = json['Report_10th'];
+    otherreport = json['otherDocument'];
+    receipt = json['recipt'];
     address = json['address'];
     interest = json['interest'];
     laptopdateReceived = json['LaptopdateReceived'];
@@ -134,6 +140,8 @@ class DataUser {
     data['Marks_12th'] = this.marks12th;
     data['Report_12th'] = this.report12th;
     data['Report_10th'] = this.report10th;
+    data['otherDocument'] = this.otherreport;
+    data['recipt'] = this.receipt;
     data['address'] = this.address;
     data['interest'] = this.interest;
     data['LaptopdateReceived'] = this.laptopdateReceived;

@@ -92,8 +92,8 @@ class _studentdataState extends State<studentdata> {
 
     void rejectreq() async {
       final response = await http.put(
-          Uri.parse(
-              'https://laptopapp.onrender.com/api/users/' + widget.data.id.toString()),
+          Uri.parse('https://laptopapp.onrender.com/api/users/' +
+              widget.data.id.toString()),
           body: {"LaptopStatus": "Rejected"});
 
       if (response.statusCode == 200) {
@@ -471,6 +471,38 @@ class _studentdataState extends State<studentdata> {
                                         )
                                       ],
                                     ),
+                                  ),
+                                  Container(
+                                    child: widget.data.otherreport != null
+                                        ? GestureDetector(
+                                            onTap: () async {
+                                              final url = widget.data.report12th
+                                                  as String;
+                                              if (await canLaunch(url)) {
+                                                await launch(url,
+                                                    forceSafariVC: false);
+                                              }
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "12th-Marksheet",
+                                                  style: GoogleFonts.roboto(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.white),
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Icon(
+                                                  Icons.download,
+                                                  color: Colors.white,
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        : Container(),
                                   )
                                   // Text("Age : 18")
                                 ],
@@ -521,7 +553,8 @@ class _studentdataState extends State<studentdata> {
                                         )
                                       ],
                                     ),
-                                  )
+                                  ),
+                                  Container()
                                 ],
                               )
                             ],
