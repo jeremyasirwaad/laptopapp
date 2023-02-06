@@ -29,7 +29,7 @@ class _studentdataState extends State<studentdata> {
   int totalamountspent = 0;
   Future<dynamic> fetchtamount() async {
     final response =
-        await http.get(Uri.parse('https://laptopapp.onrender.com/api/amount'));
+        await http.get(Uri.parse('http://3.237.103.4/api/amount'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -74,7 +74,7 @@ class _studentdataState extends State<studentdata> {
 
       var dataformjson = json.encode(datafile);
       final response = await http.put(
-          Uri.parse('https://laptopapp.onrender.com/api/users/' + userid),
+          Uri.parse('http://3.237.103.4/api/users/' + userid),
           headers: {"Content-Type": "application/json"},
           body: dataformjson);
 
@@ -92,7 +92,7 @@ class _studentdataState extends State<studentdata> {
 
     void rejectreq() async {
       final response = await http.put(
-          Uri.parse('https://laptopapp.onrender.com/api/users/' +
+          Uri.parse('http://3.237.103.4/api/users/' +
               widget.data.id.toString()),
           body: {"LaptopStatus": "Rejected"});
 
@@ -116,7 +116,7 @@ class _studentdataState extends State<studentdata> {
       var dedata = jsonEncode(datafiles);
 
       final response = await http.put(
-          Uri.parse('https://laptopapp.onrender.com/api/amount/'),
+          Uri.parse('http://3.237.103.4/api/amount/'),
           headers: {"Content-Type": "application/json"},
           body: dedata);
 

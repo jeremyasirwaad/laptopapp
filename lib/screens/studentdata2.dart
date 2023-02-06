@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,8 +34,8 @@ class _studentdata2State extends State<studentdata2> {
   Widget build(BuildContext context) {
     void rejectreq() async {
       final response = await http.put(
-          Uri.parse('https://laptopapp.onrender.com/api/users/' +
-              widget.data.id.toString()),
+          Uri.parse(
+              'http://3.237.103.4/api/users/' + widget.data.id.toString()),
           body: {"LaptopStatus": "Rejected"});
 
       if (response.statusCode == 200) {
@@ -80,6 +82,45 @@ class _studentdata2State extends State<studentdata2> {
                     child: Text("Yes"))
               ],
             ));
+
+    List<Map<String, String?>> sendJson(List<Paymentstate>? data) {
+      var paymentlist = data!
+          .map((e) => {
+                "date": e.date,
+                "amount": e.amount,
+                "content": e.content,
+                "status": e.status
+              })
+          .toList();
+
+      String paymentstatsasjson = json.encode(paymentlist);
+      print(paymentstatsasjson);
+      return paymentlist;
+    }
+
+    void acceptpayment(int? index) async {
+      setState(() {
+        widget.data.paymentstate![index as int].status = "approved";
+      });
+
+      final response = await http.put(
+        Uri.parse('http://3.237.103.4/api/users/' + widget.data.id.toString()),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"paymentstate": sendJson(widget.data.paymentstate)}),
+      );
+    }
+
+    void declinepayment(int? index) async {
+      setState(() {
+        widget.data.paymentstate![index as int].status = "declined";
+      });
+
+      final response = await http.put(
+        Uri.parse('http://3.237.103.4/api/users/' + widget.data.id.toString()),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"paymentstate": sendJson(widget.data.paymentstate)}),
+      );
+    }
 
     return Scaffold(
       bottomNavigationBar: Container(
@@ -255,8 +296,7 @@ class _studentdata2State extends State<studentdata2> {
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      final url =
-                                          widget.data.receipt as String;
+                                      final url = widget.data.receipt as String;
                                       if (await canLaunch(url)) {
                                         await launch(url, forceSafariVC: false);
                                       }
@@ -444,7 +484,7 @@ class _studentdata2State extends State<studentdata2> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Column(
-                               mainAxisAlignment:
+                                mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -575,6 +615,143 @@ class _studentdata2State extends State<studentdata2> {
                               )
                             ],
                           )),
+                    ]),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                elevation: 7,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    padding: EdgeInsets.all(15),
+                    // height: 200,
+                    child: Column(children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 15),
+                        width: double.infinity,
+                        child: Text(
+                          "PayBack History",
+                          textAlign: TextAlign.start,
+                          style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 0, 0, 0)),
+                        ),
+                      ),
+                      ...List.generate(
+                          widget.data.paymentstate!.length as int,
+                          (index) => Container(
+                                margin: EdgeInsets.all(20),
+                                child: Column(
+                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      widget.data.paymentstate![index].amount
+                                              .toString() +
+                                          "₹",
+                                      style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25,
+                                          color: Color.fromARGB(255, 0, 0, 0)),
+                                    ),
+                                    SizedBox(
+                                      height: 7,
+                                    ),
+                                    Text(
+                                      widget.data.paymentstate![index].date
+                                          .toString(),
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 14,
+                                          color: Color.fromARGB(255, 0, 0, 0)),
+                                    ),
+                                    SizedBox(
+                                      height: 7,
+                                    ),
+                                    Text(
+                                      widget.data.paymentstate![index].content
+                                          .toString(),
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 14,
+                                          color: Color.fromARGB(255, 0, 0, 0)),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    widget.data.paymentstate![index].status ==
+                                            "pending"
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  declinepayment(index);
+                                                },
+                                                child: Text("Decline"),
+                                                // style: ElevatedButton.styleFrom(
+                                                //     primary: Colors.white,
+                                                //     onPrimary: Colors.indigo),
+                                              ),
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    acceptpayment(index);
+                                                  },
+                                                  // style: ElevatedButton.styleFrom(
+                                                  //     primary: Colors.white,
+                                                  //     onPrimary: Colors.indigo),
+                                                  child: Text("Approve"))
+                                            ],
+                                          )
+                                        : Container(),
+                                    widget.data.paymentstate![index].status ==
+                                            "approved"
+                                        ? Row(
+                                            children: [
+                                              Text(
+                                                "Approved",
+                                                style: GoogleFonts.roboto(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25,
+                                                    color: Colors.green),
+                                              )
+                                            ],
+                                          )
+                                        : Container(),
+                                    widget.data.paymentstate![index].status ==
+                                            "declined"
+                                        ? Row(
+                                            children: [
+                                              Text(
+                                                "Declined",
+                                                style: GoogleFonts.roboto(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25,
+                                                    color: Colors.red),
+                                              )
+                                            ],
+                                          )
+                                        : Container(),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Divider(
+                                      height: 10,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    )
+                                  ],
+                                ),
+                              )),
                     ]),
                   ),
                 ),

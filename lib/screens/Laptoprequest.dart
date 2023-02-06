@@ -31,7 +31,7 @@ class _laptoprequestState extends State<laptoprequest> {
   var isfetched = false;
   Future<dynamic> fetchrequestdata() async {
     final response =
-        await http.get(Uri.parse('https://laptopapp.onrender.com/api/users'));
+        await http.get(Uri.parse('http://3.237.103.4/api/users'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -57,7 +57,7 @@ class _laptoprequestState extends State<laptoprequest> {
 
   Future<dynamic> fetchtamount() async {
     final response =
-        await http.get(Uri.parse('https://laptopapp.onrender.com/api/amount'));
+        await http.get(Uri.parse('http://3.237.103.4/api/amount'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -95,7 +95,7 @@ class _laptoprequestState extends State<laptoprequest> {
 
     void rejectreq(id) async {
       final response = await http.put(
-          Uri.parse('https://laptopapp.onrender.com/api/users/' + id.toString()),
+          Uri.parse('http://3.237.103.4/api/users/' + id.toString()),
           body: {"LaptopStatus": "Rejected"});
 
       if (response.statusCode == 200) {
@@ -120,7 +120,7 @@ class _laptoprequestState extends State<laptoprequest> {
       var sendingdata = json.encode(datafile);
 
       final response = await http.put(
-          Uri.parse('https://laptopapp.onrender.com/api/users/' + userid),
+          Uri.parse('http://3.237.103.4/api/users/' + userid),
           headers: {"Content-Type": "application/json"},
           body: sendingdata);
 
@@ -144,7 +144,7 @@ class _laptoprequestState extends State<laptoprequest> {
       var dedata = jsonEncode(datafiles);
 
       final response = await http.put(
-          Uri.parse('https://laptopapp.onrender.com/api/amount/'),
+          Uri.parse('http://3.237.103.4/api/amount/'),
           headers: {"Content-Type": "application/json"},
           body: dedata);
 

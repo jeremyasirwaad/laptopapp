@@ -14,7 +14,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:http/http.dart' as http;
 import '../models/receiveddata.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-// import '../models//allusers.dart';
+// import '../models/allusers.dart';
 import '../screens/Laptoprequest.dart';
 import './Trackprogressuser.dart';
 import '../models/allusers2.dart';
@@ -33,7 +33,7 @@ class _inactiveusersState extends State<inactiveusers> {
 
   Future<dynamic> fetchapproveddata() async {
     final response = await http.get(Uri.parse(
-        'https://laptopapp.onrender.com/api/users?filters[lastUpdate][\$lt]=1672816384125'));
+        'http://3.237.103.4/api/users?filters[lastUpdate][\$lt]=1672816384125'));
 
     if (response.statusCode == 200) {
       print(response.body);

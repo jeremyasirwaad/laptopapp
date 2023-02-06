@@ -79,7 +79,7 @@ class _EmailsendpageState extends State<Emailsendpage> {
 
   Future<dynamic> sendmail(String email, String html) async {
     final response = await http.get(Uri.parse(
-        'https://laptopapp.onrender.com/api/send-reminder/' +
+        'http://3.237.103.4/api/send-reminder/' +
             email +
             '/' +
             html));

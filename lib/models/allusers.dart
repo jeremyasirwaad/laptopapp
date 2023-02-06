@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class users {
   List<DataUser>? data;
 
@@ -52,6 +54,7 @@ class DataUser {
   bool? laptopReceivedByStudent;
   String? phno;
   String? imgsrc;
+  List<Paymentstate>? paymentstate;
 
   DataUser(
       {this.id,
@@ -83,7 +86,8 @@ class DataUser {
       this.laptopCost,
       required this.laptopReceivedByStudent,
       this.imgsrc,
-      this.phno});
+      this.phno,
+      this.paymentstate});
 
   DataUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -116,6 +120,12 @@ class DataUser {
     laptopReceivedByStudent = json['LaptopReceivedByStudent'];
     phno = json['phno'];
     imgsrc = json['imgsrc'];
+    if (json['paymentstate'] != null) {
+      paymentstate = <Paymentstate>[];
+      json['paymentstate'].forEach((v) {
+        paymentstate!.add(new Paymentstate.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -150,6 +160,39 @@ class DataUser {
     data['LaptopReceivedByStudent'] = this.laptopReceivedByStudent;
     data['imgsrc'] = this.imgsrc;
     data['phno'] = this.phno;
+    if (this.paymentstate != null) {
+      data['paymentstate'] = this.paymentstate!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
+}
+
+class Paymentstate {
+  int? id;
+  String? date;
+  String? amount;
+  String? content;
+  String? status;
+
+  Paymentstate({this.id, this.date, this.amount, this.content, this.status});
+
+  Paymentstate.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    date = json['date'];
+    amount = json['amount'];
+    content = json['content'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['date'] = this.date;
+    data['amount'] = this.amount;
+    data['content'] = this.content;
+    data['status'] = this.status;
+    return data;
+  }
+
+
 }

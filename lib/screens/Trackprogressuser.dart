@@ -24,7 +24,7 @@ class _TrackprogressuserState extends State<Trackprogressuser> {
 
   Future<dynamic> allusers() async {
     final response = await http.get(Uri.parse(
-        'https://laptopapp.onrender.com/api/github-data/' +
+        'http://3.237.103.4/api/github-data/' +
             (widget.rdata.githubUsername as String)));
 
     if (response.statusCode == 200) {
@@ -82,7 +82,7 @@ class _TrackprogressuserState extends State<Trackprogressuser> {
                   color: Colors.indigo,
                   child: Center(
                     child: Image.network(
-                        "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"),
+                        "http://3.237.103.4/images/modules/logos_page/GitHub-Mark.png"),
                   ),
                 ),
               ),
