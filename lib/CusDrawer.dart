@@ -6,6 +6,7 @@ import './screens/trackprogress.dart';
 import './screens/Laptoprequest.dart';
 import 'package:laptopapp/screens/dashboard.dart';
 import 'package:page_transition/page_transition.dart';
+import './screens/Inactiveusers.dart';
 
 class Customdrawer extends StatefulWidget {
   Customdrawer({Key? key}) : super(key: key);
@@ -77,6 +78,16 @@ class _CustomdrawerState extends State<Customdrawer> {
           const SizedBox(
             height: 24,
           ),
+          buildmenu(
+              text: "Inactive Beneficiaries",
+              icon: const FaIcon(
+                FontAwesomeIcons.clock,
+                color: Colors.white,
+              ),
+              onClicked: () => selecteditem(context, 4)),
+          const SizedBox(
+            height: 24,
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Divider(
@@ -134,6 +145,13 @@ void selecteditem(BuildContext context, index) {
           context,
           PageTransition(
               type: PageTransitionType.rightToLeft, child: trackprogress()));
+      break;
+
+    case 4:
+      Navigator.pushReplacement(
+          context,
+          PageTransition(
+              type: PageTransitionType.rightToLeft, child: inactiveusers()));
       break;
   }
 }

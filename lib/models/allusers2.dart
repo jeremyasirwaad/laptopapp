@@ -52,6 +52,7 @@ class DataUser {
   String? createdAt;
   String? updatedAt;
   String? githubUsername;
+  String? lastUpdate;
 
   DataUser(
       {this.id,
@@ -83,7 +84,8 @@ class DataUser {
       this.statusUpdate,
       this.createdAt,
       this.updatedAt,
-      this.githubUsername});
+      this.githubUsername,
+      this.lastUpdate});
 
   DataUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -112,6 +114,10 @@ class DataUser {
     imgsrc = json['imgsrc'];
     laptopDateApproved = json['LaptopDateApproved'];
     laptopdateReceived = json['LaptopdateReceived'];
+
+    // if (json['lastUpdate'] != null) {
+      lastUpdate = json['lastUpdate'];
+    // }
 
     if (json['statusUpdate'] != null) {
       statusUpdate = <StatusUpdate>[];
@@ -158,6 +164,11 @@ class DataUser {
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['githubUsername'] = this.githubUsername;
+    // if (this.lastUpdate != null) {
+    //   data['lastUpdate'] = this.lastUpdate;
+    // }
+      data['lastUpdate'] = this.lastUpdate;
+
     return data;
   }
 }
