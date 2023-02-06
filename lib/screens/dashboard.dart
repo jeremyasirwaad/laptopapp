@@ -42,8 +42,7 @@ class _dashboardState extends State<dashboard> {
   );
 
   Future<dynamic> allusers() async {
-    final response =
-        await http.get(Uri.parse('http://3.237.103.4/api/users'));
+    final response = await http.get(Uri.parse('http://3.237.103.4/api/users'));
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -89,8 +88,7 @@ class _dashboardState extends State<dashboard> {
   }
 
   Future<dynamic> fetchtamount() async {
-    final response =
-        await http.get(Uri.parse('http://3.237.103.4/api/amount'));
+    final response = await http.get(Uri.parse('http://3.237.103.4/api/amount'));
 
     if (response.statusCode == 200) {
       print("hello");
@@ -206,7 +204,7 @@ class _dashboardState extends State<dashboard> {
                     Align(
                       alignment: Alignment.center,
                       child: Container(
-                        margin: EdgeInsets.only( top: 20),
+                        margin: EdgeInsets.only(top: 20),
                         child: FittedBox(
                           fit: BoxFit.fitWidth,
                           child: totallapslent == -1
@@ -224,7 +222,6 @@ class _dashboardState extends State<dashboard> {
                         ),
                       ),
                     ),
-                   
                   ]),
                 ),
                 // color: Colors.black,
