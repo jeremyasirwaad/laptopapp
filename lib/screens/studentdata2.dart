@@ -35,7 +35,7 @@ class _studentdata2State extends State<studentdata2> {
     void rejectreq() async {
       final response = await http.put(
           Uri.parse(
-              'http://3.237.103.4/api/users/' + widget.data.id.toString()),
+              'https://manage-laptopapp.itzapril.tech/api/users/' + widget.data.id.toString()),
           body: {"LaptopStatus": "Rejected"});
 
       if (response.statusCode == 200) {
@@ -104,7 +104,7 @@ class _studentdata2State extends State<studentdata2> {
       });
 
       final response = await http.put(
-        Uri.parse('http://3.237.103.4/api/users/' + widget.data.id.toString()),
+        Uri.parse('https://manage-laptopapp.itzapril.tech/api/users/' + widget.data.id.toString()),
         headers: {"Content-Type": "application/json"},
         body: json.encode({"paymentstate": sendJson(widget.data.paymentstate)}),
       );
@@ -116,7 +116,7 @@ class _studentdata2State extends State<studentdata2> {
       });
 
       final response = await http.put(
-        Uri.parse('http://3.237.103.4/api/users/' + widget.data.id.toString()),
+        Uri.parse('https://manage-laptopapp.itzapril.tech/api/users/' + widget.data.id.toString()),
         headers: {"Content-Type": "application/json"},
         body: json.encode({"paymentstate": sendJson(widget.data.paymentstate)}),
       );

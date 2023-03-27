@@ -79,7 +79,7 @@ class _EmailsendpageState extends State<Emailsendpage> {
 
   Future<dynamic> sendmail(String email, String html) async {
     final response = await http.get(Uri.parse(
-        'http://3.237.103.4/api/send-reminder/' +
+        'https://manage-laptopapp.itzapril.tech/api/send-reminder/' +
             email +
             '/' +
             html));

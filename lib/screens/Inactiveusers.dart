@@ -33,7 +33,7 @@ class _inactiveusersState extends State<inactiveusers> {
 
   Future<dynamic> fetchapproveddata() async {
     final response = await http.get(Uri.parse(
-        'http://3.237.103.4/api/users?filters[lastUpdate][\$lt]=1672816384125'));
+        'https://manage-laptopapp.itzapril.tech/api/users?filters[lastUpdate][\$lt]=1672816384125'));
 
     if (response.statusCode == 200) {
       print(response.body);

@@ -42,7 +42,7 @@ class _dashboardState extends State<dashboard> {
   );
 
   Future<dynamic> allusers() async {
-    final response = await http.get(Uri.parse('http://3.237.103.4/api/users'));
+    final response = await http.get(Uri.parse('https://manage-laptopapp.itzapril.tech/api/users'));
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -66,7 +66,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchAlbum() async {
     final response =
-        await http.get(Uri.parse('http://3.237.103.4/api/github-data'));
+        await http.get(Uri.parse('https://manage-laptopapp.itzapril.tech/api/github-data'));
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -88,7 +88,7 @@ class _dashboardState extends State<dashboard> {
   }
 
   Future<dynamic> fetchtamount() async {
-    final response = await http.get(Uri.parse('http://3.237.103.4/api/amount'));
+    final response = await http.get(Uri.parse('https://manage-laptopapp.itzapril.tech/api/amount'));
 
     if (response.statusCode == 200) {
       print("hello");
@@ -112,7 +112,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchtreceived() async {
     final response = await http.get(Uri.parse(
-        "http://3.237.103.4/api/laptop-statuses?filters[status][\$contains]=laptopReceived&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
+        "https://manage-laptopapp.itzapril.tech/api/laptop-statuses?filters[status][\$contains]=laptopReceived&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -135,7 +135,7 @@ class _dashboardState extends State<dashboard> {
 
   Future<dynamic> fetchpending() async {
     final response = await http.get(Uri.parse(
-        "http://3.237.103.4/api/laptop-statuses?filters[status][\$contains]=laptopPending&populate[0]=users&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
+        "https://manage-laptopapp.itzapril.tech/api/laptop-statuses?filters[status][\$contains]=laptopPending&populate[0]=users&populate[1]=users.updateProgress&populate[2]=users.skillProgress"));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
